@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-
+// Static File
 app.use(express.static(path.join(__dirname, 'public')))
 
 // HTTP logger: xem thong bao thay doi
