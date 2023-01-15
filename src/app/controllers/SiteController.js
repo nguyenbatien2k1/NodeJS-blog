@@ -1,9 +1,17 @@
+import Course from "../models/Course.js"
+
 class SiteController {
     
 
     // [GET] /
     home(req, res) {
-        res.render('home')
+
+        Course.find({}, function (err, courses) {
+            // docs.forEach
+            if(!err) res.json(courses)
+            else res.status(500).json({error: 'message error!'})
+        });
+
     }
 
     // [GET] /search
