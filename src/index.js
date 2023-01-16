@@ -1,6 +1,8 @@
 import express from "express";
 import { engine } from "express-handlebars";
 
+import MethodOverride from "method-override";
+
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -33,11 +35,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // HTTP logger: xem thong bao thay doi
 // app.use(morgan('combined'))
 
+
+//
+app.use(MethodOverride('_method'))
+
 // Teamplate Engine
 app.engine(
   ".hbs",
   engine({
     extname: ".hbs",
+    helpers: {
+      sum: (a, b) => a + b,
+    }
   })
 );
 app.set("view engine", ".hbs");
