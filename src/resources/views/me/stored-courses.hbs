@@ -12,19 +12,83 @@
       </tr>
     </thead>
     <tbody>
-        {{#each courses}}
-            <tr>
-                <th scope="row">{{sum @index 1}}</th>
-                <td>{{this.name}}</td>
-                <td>{{this.level}}</td>
-                <td>{{this.createdAt}}</td>
-                <td>
-                    <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-                    <a href="#" class="btn btn-link">Xóa</a>
-                </td>
-                
-            </tr>
+      {{#each courses}}
+        <tr>
+          <th scope="row">{{sum @index 1}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.createdAt}}</td>
+          <td>
+            <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+            <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-course-modal">Xóa</a>
+          </td>
+
+        </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="delete-course-modal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cảnh báo !</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa khóa học này không ?
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+        >Hủy bỏ</button>
+        <button id="btn-delete-course" type="button" class="btn btn-primary">Đồng ý</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete Hidden Form --}}
+<form id="delete-course-form" method="POST"></form>
+
+
+<script>
+
+    // Khi DOM load xong thì mới xử lý function
+    document.addEventListener('DOMContentLoaded', function() {
+
+        let courseId;
+        const deleteCourseForm = document.querySelector('#delete-course-form')
+        const btnDeleteCourse = document.querySelector('#btn-delete-course')
+
+        // Xử lý khi click vào nút Xóa
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+          const button = $(event.relatedTarget) 
+          courseId = button.data('id')
+        })
+
+        // Xử lý khi click vào nút "Đồng ý"
+        btnDeleteCourse.addEventListener('click', function() {
+            deleteCourseForm.action = '/courses/' + courseId + '?_method=DELETE'
+            deleteCourseForm.submit()
+        })
+    })
+    
+</script>
