@@ -10,6 +10,7 @@ import morgan from "morgan";
 import route from "./routes/index.js";
 
 import db from "./config/db/index.js";
+import SortMiddleware from "./app/middleware/SortMiddleware.js";
 // Connect to DB
 db.connect()
 
@@ -29,6 +30,9 @@ app.use(
 app.use(express.json()); // Xử lý dữ liệu từ client gửi lên server (gửi từ dạng javascript lên)
 // VD: XMLHttpRequest, fetch, axios, ajax...
 
+// Sort Middleware
+app.use(SortMiddleware)
+
 // Static File
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -46,6 +50,28 @@ app.engine(
     extname: ".hbs",
     helpers: {
       sum: (a, b) => a + b,
+      sortable: (field, sort) => {
+
+        const sortType = field === sort.column ? sort.type : 'default'
+
+        const icons = {
+          default: 'oi oi-elevator',
+          asc: 'oi oi-sort-ascending',
+          desc: 'oi oi-sort-descending'
+        }
+
+        const types = {
+          default: 'desc',
+          asc: 'desc',
+          desc: 'asc'
+        }
+
+        const icon = icons[sortType]
+        const type = types[sortType]
+
+
+        return `<a href="?_sort&column=${field}&type=${type}"><span class="${icon}"></span></a>`
+      }
     }
   })
 );
