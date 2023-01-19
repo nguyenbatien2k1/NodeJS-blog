@@ -16,7 +16,7 @@
         <option value="delete">Xóa</option>
       </select>
 
-      <button class="btn btn-primary btn-sm disabled btn-thuc-hien">Thực hiện</button>
+      <button class="btn btn-primary btn-sm btn-thuc-hien" disabled>Thực hiện</button>
 
     </div>
   </div>
@@ -144,8 +144,8 @@
         })
 
         // Khi click vào nút "Thực hiện"
-        btnThucHien.on('submit', function(e) {
-          const isSubmitable = !$(this).hasClass('disabled')
+        containerForm.on('submit', function(e) {
+          const isSubmitable = !btnThucHien.hasClass('disabled')
           if(!isSubmitable) {
             e.preventDefault()
           }
@@ -155,10 +155,10 @@
         function renderCheckAllSubmitBtn() {
           const checkedCount = $('input[name="courseIds[]"]:checked').length
           if(checkedCount > 0) {
-            btnThucHien.removeClass('disabled')
+            btnThucHien.attr('disabled', false)
           }
           else {
-             btnThucHien.addClass('disabled')
+             btnThucHien.attr('disabled', true)
           }
         }
 
